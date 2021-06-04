@@ -1,6 +1,7 @@
 package org.baeldung.avengers.avengersdashboard.statuses;
 
 import java.util.List;
+import org.baeldung.avengers.avengersdashboard.events.EventsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,8 +14,12 @@ public class UpdateController {
   @Autowired
   private StatusesService statusesService;
 
+  @Autowired
+  private EventsService eventsService;
+
   @PostMapping("/update/{avenger}")
-  public void getStatuses(@PathVariable String avenger, @RequestBody UpdateBody body) throws Exception {
+  public void update(@PathVariable String avenger, @RequestBody UpdateBody body) throws Exception {
+    eventsService.createEvent(avenger, body.lat(), body.lng(), body.status());
     statusesService.updateStatus(avenger, lookupLocation(body.lat(), body.lng()), getStatus(body.status()));
   }
 

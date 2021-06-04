@@ -14,7 +14,14 @@ public class StatusesService {
 
   public List<Status> getStatuses() {
     var collection = client.getDocument("statuses", "latest", Statuses.class);
-    return new ArrayList<>(collection.data().values());
+
+    var result = new ArrayList<Status>();
+    for (var entry : collection.data().entrySet()) {
+      var status = entry.getValue();
+      result.add(new Status(entry.getKey(), status.name(), status.realName(), status.status(), status.location()));
+    }
+
+    return result;
   }
 
   public void updateStatus(String avenger, String location, String status) throws Exception {
