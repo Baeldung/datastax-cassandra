@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 source ./application.properties
 
@@ -58,25 +58,22 @@ curl -v --request POST --url https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.da
 }'
 
 # Data for the events collection
-curl -s --location --request POST https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/keyspaces/$ASTRA_DB_KEYSPACE/events --header "X-Cassandra-Token: $ASTRA_DB_APPLICATION_TOKEN" --header 'Content-Type: application/json' --data '{"avenger": "falcon","timestamp": "2021-05-17T09:00:00Z","latitude": 40.727593,"longitude": -73.971798,"status":0.85}'
-curl -s --location --request POST https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/keyspaces/$ASTRA_DB_KEYSPACE/events --header "X-Cassandra-Token: $ASTRA_DB_APPLICATION_TOKEN" --header 'Content-Type: application/json' --data '{"avenger": "falcon","timestamp": "2021-05-17T09:00:30Z","latitude": 40.726144,"longitude": -73.972157,"status":0.85}'
-curl -s --location --request POST https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/keyspaces/$ASTRA_DB_KEYSPACE/events --header "X-Cassandra-Token: $ASTRA_DB_APPLICATION_TOKEN" --header 'Content-Type: application/json' --data '{"avenger": "falcon","timestamp": "2021-05-17T09:01:00Z","latitude": 40.724696,"longitude": -73.972516,"status":0.85}'
-curl -s --location --request POST https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/keyspaces/$ASTRA_DB_KEYSPACE/events --header "X-Cassandra-Token: $ASTRA_DB_APPLICATION_TOKEN" --header 'Content-Type: application/json' --data '{"avenger": "falcon","timestamp": "2021-05-17T09:01:30Z","latitude": 40.723248,"longitude": -73.972875,"status":0.85}'
-curl -s --location --request POST https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/keyspaces/$ASTRA_DB_KEYSPACE/events --header "X-Cassandra-Token: $ASTRA_DB_APPLICATION_TOKEN" --header 'Content-Type: application/json' --data '{"avenger": "falcon","timestamp": "2021-05-17T09:02:00Z","latitude": 40.721799,"longitude": -73.973234,"status":0.85}'
-curl -s --location --request POST https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/keyspaces/$ASTRA_DB_KEYSPACE/events --header "X-Cassandra-Token: $ASTRA_DB_APPLICATION_TOKEN" --header 'Content-Type: application/json' --data '{"avenger": "falcon","timestamp": "2021-05-17T09:02:30Z","latitude": 40.720351,"longitude": -73.973593,"status":0.82}'
-curl -s --location --request POST https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/keyspaces/$ASTRA_DB_KEYSPACE/events --header "X-Cassandra-Token: $ASTRA_DB_APPLICATION_TOKEN" --header 'Content-Type: application/json' --data '{"avenger": "falcon","timestamp": "2021-05-17T09:03:00Z","latitude": 40.718903,"longitude": -73.973952,"status":0.80}'
-curl -s --location --request POST https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/keyspaces/$ASTRA_DB_KEYSPACE/events --header "X-Cassandra-Token: $ASTRA_DB_APPLICATION_TOKEN" --header 'Content-Type: application/json' --data '{"avenger": "falcon","timestamp": "2021-05-17T09:03:30Z","latitude": 40.717454,"longitude": -73.974311,"status":0.77}'
-curl -s --location --request POST https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/keyspaces/$ASTRA_DB_KEYSPACE/events --header "X-Cassandra-Token: $ASTRA_DB_APPLICATION_TOKEN" --header 'Content-Type: application/json' --data '{"avenger": "falcon","timestamp": "2021-05-17T09:04:00Z","latitude": 40.716006,"longitude": -73.974670,"status":0.75}'
-curl -s --location --request POST https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/keyspaces/$ASTRA_DB_KEYSPACE/events --header "X-Cassandra-Token: $ASTRA_DB_APPLICATION_TOKEN" --header 'Content-Type: application/json' --data '{"avenger": "falcon","timestamp": "2021-05-17T09:04:30Z","latitude": 40.714558,"longitude": -73.975029,"status":0.72}'
+lat_start=40.714558
+lng_start=-73.975029
 
-curl -s --location --request POST https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/keyspaces/$ASTRA_DB_KEYSPACE/events --header "X-Cassandra-Token: $ASTRA_DB_APPLICATION_TOKEN" --header 'Content-Type: application/json' --data '{"avenger": "hawkeye","timestamp": "2021-05-17T09:00:00Z","latitude": 40.712515,"longitude": -73.968695,"status":1.00}'
-curl -s --location --request POST https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/keyspaces/$ASTRA_DB_KEYSPACE/events --header "X-Cassandra-Token: $ASTRA_DB_APPLICATION_TOKEN" --header 'Content-Type: application/json' --data '{"avenger": "hawkeye","timestamp": "2021-05-17T09:00:30Z","latitude": 40.712742,"longitude": -73.969399,"status":0.98}'
-curl -s --location --request POST https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/keyspaces/$ASTRA_DB_KEYSPACE/events --header "X-Cassandra-Token: $ASTRA_DB_APPLICATION_TOKEN" --header 'Content-Type: application/json' --data '{"avenger": "hawkeye","timestamp": "2021-05-17T09:01:00Z","latitude": 40.712969,"longitude": -73.970103,"status":0.95}'
-curl -s --location --request POST https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/keyspaces/$ASTRA_DB_KEYSPACE/events --header "X-Cassandra-Token: $ASTRA_DB_APPLICATION_TOKEN" --header 'Content-Type: application/json' --data '{"avenger": "hawkeye","timestamp": "2021-05-17T09:01:30Z","latitude": 40.713196,"longitude": -73.970806,"status":0.91}'
-curl -s --location --request POST https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/keyspaces/$ASTRA_DB_KEYSPACE/events --header "X-Cassandra-Token: $ASTRA_DB_APPLICATION_TOKEN" --header 'Content-Type: application/json' --data '{"avenger": "hawkeye","timestamp": "2021-05-17T09:02:00Z","latitude": 40.713423,"longitude": -73.971510,"status":0.90}'
-curl -s --location --request POST https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/keyspaces/$ASTRA_DB_KEYSPACE/events --header "X-Cassandra-Token: $ASTRA_DB_APPLICATION_TOKEN" --header 'Content-Type: application/json' --data '{"avenger": "hawkeye","timestamp": "2021-05-17T09:02:30Z","latitude": 40.713650,"longitude": -73.972214,"status":0.89}'
-curl -s --location --request POST https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/keyspaces/$ASTRA_DB_KEYSPACE/events --header "X-Cassandra-Token: $ASTRA_DB_APPLICATION_TOKEN" --header 'Content-Type: application/json' --data '{"avenger": "hawkeye","timestamp": "2021-05-17T09:03:00Z","latitude": 40.713877,"longitude": -73.972918,"status":0.89}'
-curl -s --location --request POST https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/keyspaces/$ASTRA_DB_KEYSPACE/events --header "X-Cassandra-Token: $ASTRA_DB_APPLICATION_TOKEN" --header 'Content-Type: application/json' --data '{"avenger": "hawkeye","timestamp": "2021-05-17T09:03:30Z","latitude": 40.714104,"longitude": -73.973621,"status":0.89}'
-curl -s --location --request POST https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/keyspaces/$ASTRA_DB_KEYSPACE/events --header "X-Cassandra-Token: $ASTRA_DB_APPLICATION_TOKEN" --header 'Content-Type: application/json' --data '{"avenger": "hawkeye","timestamp": "2021-05-17T09:04:00Z","latitude": 40.714331,"longitude": -73.974325,"status":0.89}'
-curl -s --location --request POST https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/keyspaces/$ASTRA_DB_KEYSPACE/events --header "X-Cassandra-Token: $ASTRA_DB_APPLICATION_TOKEN" --header 'Content-Type: application/json' --data '{"avenger": "hawkeye","timestamp": "2021-05-17T09:04:30Z","latitude": 40.714558,"longitude": -73.975029,"status":0.89}'
+for avenger in hulk hawkeye wanda falcon; do
+    timestamp=1621155600 # Monday, 16 May 2021 09:00:00 GMT 
+    lat=$lat_start
+    lng=$lng_start
+    status=1.00
 
+    while [ $timestamp -le 1621242000 ]; do # Monday, 17 May 2021 09:00:00 GMT
+        timestamp=$(( timestamp + 30 ))
+        time=`date -r ${timestamp} -u +"%Y-%m-%dT%H:%M:%SZ"`
+        lat=`echo "((($RANDOM % 2000) - 1000) * 0.000001) + $lat" | bc`
+        lng=`echo "((($RANDOM % 2000) - 1000) * 0.000001) + $lng" | bc`
+        status=`echo "$status - (($RANDOM % 100) * 0.000002)" | bc | awk '{printf "%f", $0}'`
+
+        curl -s --location --request POST https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/keyspaces/$ASTRA_DB_KEYSPACE/events --header "X-Cassandra-Token: $ASTRA_DB_APPLICATION_TOKEN" --header 'Content-Type: application/json' --data "{\"avenger\": \"$avenger\",\"timestamp\": \"$time\",\"latitude\":$lat,\"longitude\":$lng,\"status\":$status}"
+    done
+done
