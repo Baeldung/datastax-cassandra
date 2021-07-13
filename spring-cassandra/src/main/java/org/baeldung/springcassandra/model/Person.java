@@ -12,20 +12,20 @@ import java.util.UUID;
 
 @Data
 @Builder
-@Table("person")
+@Table
 public class Person {
 
     @PrimaryKey
     private UUID id;
 
-    private String first;
+    private String firstName;
 
-    private String last;
+    private String lastName;
 
-    private LocalDate birthDate1;
+    private LocalDate birthDate;
 
-    private LocalDateTime birthDate2;
+    private LocalDateTime lastVisitedDate;
 
-    private Date birthDate3;
+    private Date lastPurchasedDate;
 
 }
