@@ -13,7 +13,7 @@ public abstract class CassandraContainerInitializer {
     private static final String KEYSPACE_NAME = "test";
 
     @Container
-    public static final CassandraContainer cassandra = (CassandraContainer) new CassandraContainer("cassandra:3.11.2")
+    protected static final CassandraContainer cassandra = (CassandraContainer) new CassandraContainer("cassandra:3.11.2")
       .withExposedPorts(9042);
 
     public static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {

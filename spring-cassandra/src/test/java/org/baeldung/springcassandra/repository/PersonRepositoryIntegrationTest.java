@@ -22,19 +22,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Testcontainers
 @ContextConfiguration(initializers = PersonRepositoryIntegrationTest.Initializer.class)
 @EnableConfigurationProperties
-public class PersonRepositoryIntegrationTest extends CassandraContainerInitializer {
+class PersonRepositoryIntegrationTest extends CassandraContainerInitializer {
 
     @Autowired
     private PersonRepository personRepository;
 
     @Test
-    public void givenValidPersonRecord_whenSavingIt_thenDataIsPersisted() {
+    void givenValidPersonRecord_whenSavingIt_thenDataIsPersisted() {
         UUID personId = UUIDs.timeBased();
-        final Person newPerson = Person.builder()
-          .id(personId)
-          .firstName("Luka")
-          .lastName("Modric")
-          .build();
+        Person newPerson = new Person(personId, "Luka", "Modric");
         personRepository.save(newPerson);
 
         List<Person> savedPersons = personRepository.findAllById(List.of(personId));
@@ -42,14 +38,10 @@ public class PersonRepositoryIntegrationTest extends CassandraContainerInitializ
     }
 
     @Test
-    public void givenValidPersonUsingLocalDate_whenSavingIt_thenDataIsPersisted() {
+    void givenValidPersonUsingLocalDate_whenSavingIt_thenDataIsPersisted() {
         UUID personId = UUIDs.timeBased();
-        final Person newPerson = Person.builder()
-          .id(personId)
-          .firstName("Luka")
-          .lastName("Modric")
-          .birthDate(LocalDate.of(1985, 9, 9))
-          .build();
+        Person newPerson = new Person(personId, "Luka", "Modric");
+        newPerson.setBirthDate(LocalDate.of(1985, 9, 9));
         personRepository.save(newPerson);
 
         List<Person> savedPersons = personRepository.findAllById(List.of(personId));
@@ -57,14 +49,10 @@ public class PersonRepositoryIntegrationTest extends CassandraContainerInitializ
     }
 
     @Test
-    public void givenValidPersonUsingLocalDateTime_whenSavingIt_thenDataIsPersisted() {
+    void givenValidPersonUsingLocalDateTime_whenSavingIt_thenDataIsPersisted() {
         UUID personId = UUIDs.timeBased();
-        final Person newPerson = Person.builder()
-          .id(personId)
-          .firstName("Luka")
-          .lastName("Modric")
-          .lastVisitedDate(LocalDateTime.of(2021, 7, 13, 11, 30))
-          .build();
+        Person newPerson = new Person(personId, "Luka", "Modric");
+        newPerson.setLastVisitedDate(LocalDateTime.of(2021, 7, 13, 11, 30));
         personRepository.save(newPerson);
 
         List<Person> savedPersons = personRepository.findAllById(List.of(personId));
@@ -72,14 +60,10 @@ public class PersonRepositoryIntegrationTest extends CassandraContainerInitializ
     }
 
     @Test
-    public void givenValidPersonUsingLegacyDate_whenSavingIt_thenDataIsPersisted() {
+    void givenValidPersonUsingLegacyDate_whenSavingIt_thenDataIsPersisted() {
         UUID personId = UUIDs.timeBased();
-        final Person newPerson = Person.builder()
-          .id(personId)
-          .firstName("Luka")
-          .lastName("Modric")
-          .lastPurchasedDate(new Date(LocalDate.of(2021, 7, 13).toEpochDay()))
-          .build();
+        Person newPerson = new Person(personId, "Luka", "Modric");
+        newPerson.setLastPurchasedDate(new Date(LocalDate.of(2021, 7, 13).toEpochDay()));
         personRepository.save(newPerson);
 
         List<Person> savedPersons = personRepository.findAllById(List.of(personId));
