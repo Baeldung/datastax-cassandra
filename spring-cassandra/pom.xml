@@ -60,8 +60,6 @@
 		<java.version>11</java.version>
 		<lombok.version>1.18.20</lombok.version>
 		<org.springframework.data.version>3.2.2</org.springframework.data.version>
-		<junit-4.version>4.12</junit-4.version>
-		<cassandra-unit.version>4.3.1.0</cassandra-unit.version>
 	</properties>
 
 	<build>
