@@ -44,14 +44,13 @@ class CassandraIntegrationTest {
     public static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
         @Override
         public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
-            cassandra.start();
-            createKeyspace(cassandra.getCluster());
-
             TestPropertyValues.of(
               "spring.data.cassandra.keyspace-name=" + KEYSPACE_NAME,
               "spring.data.cassandra.contact-points=" + cassandra.getContainerIpAddress(),
               "spring.data.cassandra.port=" + cassandra.getMappedPort(9042)
             ).applyTo(configurableApplicationContext.getEnvironment());
+
+            createKeyspace(cassandra.getCluster());
         }
     }
 
@@ -74,11 +73,6 @@ class CassandraIntegrationTest {
 
     @Nested
     class PersonRepositoryIntegrationTest {
-
-        @Test
-        void givenCassandraContainer_whenSpringContextIsBootstrapped_thenContainerIsRunningWithNoExceptions() {
-            assertThat(cassandra.isRunning()).isTrue();
-        }
 
         @Test
         void givenValidPersonRecord_whenSavingIt_thenDataIsPersisted() {
