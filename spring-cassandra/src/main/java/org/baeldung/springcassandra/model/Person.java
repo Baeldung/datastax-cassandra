@@ -81,10 +81,12 @@ public class Person {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
+        if (this == o) {
             return true;
-        if (o == null || getClass() != o.getClass())
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
+        }
         Person person = (Person) o;
         return id.equals(person.id) && Objects.equals(firstName, person.firstName) && Objects.equals(lastName, person.lastName) && Objects.equals(birthDate, person.birthDate) && Objects.equals(lastVisitedDate, person.lastVisitedDate) && Objects.equals(
           lastPurchasedDate, person.lastPurchasedDate);
