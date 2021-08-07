@@ -19,6 +19,7 @@
 
 	<modules>
 		<module>avengers-dashboard</module>
+		<module>spring-data-cassandra-test</module>
 	</modules>
 
 	<build>
