@@ -19,6 +19,7 @@
 
 	<modules>
 		<module>avengers-dashboard</module>
+		<module>cassandra-unit</module>
 	</modules>
 
 	<build>
