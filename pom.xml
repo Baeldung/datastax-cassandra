@@ -18,8 +18,9 @@
 	</dependencies>
 
 	<modules>
-		<module>avengers-dashboard</module>
-		<module>cassandra-unit</module>
+	    <module>avengers-dashboard</module>
+	    <module>cassandra-unit</module>
+	    <module>spring-data-cassandra-test</module>
 	</modules>
 
 	<build>

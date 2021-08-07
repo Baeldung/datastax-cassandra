@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous" />
+
+  <title>Avengers Status Map</title>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Avengers Status Map</a>
+    </div>
+  </nav>
+
+  <div class="container-fluid mt-4">
+    <div class="row">
+      <div class="col-3">
+        <form action="/map" method="get">
+          <div class="mb-3">
+            <label for="avenger" class="form-label">Avengers</label>
+            <select class="form-select" multiple name="avenger" id="avenger" required>
+              <option th:each="avenger: ${avengers}" th:text="${avenger}" th:value="${avenger}"
+                th:selected="${inputAvengers != null && inputAvengers.contains(avenger)}"></option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="start" class="form-label">Start Time</label>
+            <input type="datetime-local" class="form-control" name="start" id="start" th:value="${inputStart}"
+              required />
+          </div>
+          <div class="mb-3">
+            <label for="end" class="form-label">End Time</label>
+            <input type="datetime-local" class="form-control" name="end" id="end" th:value="${inputEnd}" required />
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+      <div class="col-9">
+        <div id="map" style="width: 100%; height: 40em;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
+    </script>
+  <script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    let paths = /*[[${paths}]]*/ {};
+
+    let map;
+    let openInfoWindow;
+
+    function initMap() {
+      let averageLatitude = 0;
+      let averageLongitude = 0;
+
+      if (paths) {
+        let numPaths = 0;
+
+        for (const path of Object.values(paths)) {
+          let last = path[path.length - 1];
+          averageLatitude += last.latitude;
+          averageLongitude += last.longitude;
+          numPaths++;
+        }
+
+        averageLatitude /= numPaths;
+        averageLongitude /= numPaths;
+      } else {
+        // We had no data, so lets just tidy things up:
+        paths = {};
+        averageLatitude = 40.730610;
+        averageLongitude = -73.935242;
+      }
+
+
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: averageLatitude, lng: averageLongitude },
+        zoom: 16,
+      });
+
+      for (const avenger of Object.keys(paths)) {
+        const path = paths[avenger];
+        const color = getColor(avenger);
+
+        new google.maps.Polyline({
+          path: path.map(point => ({ lat: point.latitude, lng: point.longitude })),
+          geodesic: true,
+          strokeColor: color,
+          strokeOpacity: 1.0,
+          strokeWeight: 2,
+          map: map,
+        });
+
+        path.forEach((point, index) => {
+          const infowindow = new google.maps.InfoWindow({
+            content: "<dl><dt>Avenger</dt><dd>" + avenger + "</dd><dt>Timestamp</dt><dd>" + point.timestamp + "</dd><dt>Status</dt><dd>" + Math.round(point.status * 10000) / 100 + "%</dd></dl>"
+          });
+
+          const marker = new google.maps.Marker({
+            position: { lat: point.latitude, lng: point.longitude },
+            icon: {
+              path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+              strokeColor: color,
+              scale: index == path.length - 1 ? 5 : 3
+            },
+            map: map,
+          });
+
+          marker.addListener("click", () => {
+            if (openInfoWindow) {
+              openInfoWindow.close();
+              openInfoWindow = undefined;
+            }
+
+            openInfoWindow = infowindow;
+            infowindow.open({
+              anchor: marker,
+              map: map,
+              shouldFocus: false,
+            });
+          });
+
+        });
+      }
+    }
+
+    function getColor(avenger) {
+      return {
+        wanda: '#ff2400',
+        hulk: '#008000',
+        hawkeye: '#9370db',
+        falcon: '#000000'
+      }[avenger];
+    }
+
+    /*]]>*/
+  </script>
+  <script
+    th:src="${'https://maps.googleapis.com/maps/api/js?key=' + googleClientId + '&callback=initMap&libraries=&v=weekly'}"
+    async></script>
+</body>
+
+</html>
