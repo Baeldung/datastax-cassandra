@@ -1,0 +1,4 @@
+spring:
+  data:
+    cassandra:
+      request:        consistency: local-quorum

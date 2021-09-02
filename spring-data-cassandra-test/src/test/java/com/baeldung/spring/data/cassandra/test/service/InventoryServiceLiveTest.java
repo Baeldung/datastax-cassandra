@@ -5,7 +5,6 @@ import com.baeldung.spring.data.cassandra.test.domain.Vehicle;
 import com.baeldung.spring.data.cassandra.test.repository.InventoryRepository;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.cassandra.DataCassandraTest;
@@ -25,8 +24,6 @@ public class InventoryServiceLiveTest {
     @Autowired
     private InventoryRepository repository;
 
-    private InventoryService inventoryService;
-
     public static DockerComposeContainer container =
             new DockerComposeContainer(new File("src/test/resources/compose-test.yml"));
 
@@ -40,14 +37,9 @@ public class InventoryServiceLiveTest {
         container.stop();
     }
 
-    @BeforeEach
-    public void setUp() {
-        inventoryService = new InventoryService(this.repository);
-    }
-
     @Test
     public void givenVehiclesInDBInitially_whenRetrieved_thenReturnAllVehiclesFromDB() {
-        List<Vehicle> vehicles = inventoryService.getVehicles();
+        List<Vehicle> vehicles = repository.findAllVehicles();
         assertThat(vehicles).isNotNull();
         assertThat(vehicles).isNotEmpty();
     }
@@ -60,18 +52,19 @@ public class InventoryServiceLiveTest {
                 new Vehicle(vin1, 2020, "Toyota", "Camry"),
                 new Vehicle(vin2, 2019, "Honda", "Prius")
         );
-        inventoryService.addVehicles(vehicles);
+        
+        repository.saveAll(vehicles);
 
-        vehicles = inventoryService.getVehicles();
+        vehicles = repository.findAllVehicles();
         assertThat(vehicles).isNotNull();
         assertThat(vehicles).isNotEmpty();
         assertThat(vehicles.size()).isEqualTo(5);
 
-        Vehicle vehicle = inventoryService.getVehicle(vin1);
+        Vehicle vehicle = repository.findByVin(vin1).orElse(null);
         assertThat(vehicle).isNotNull();
         assertThat(vehicle.getVin()).isEqualTo(vin1);
 
-        vehicle = inventoryService.getVehicle(vin2);
+        vehicle = repository.findByVin(vin2).orElse(null);
         assertThat(vehicle).isNotNull();
         assertThat(vehicle.getVin()).isEqualTo(vin2);
     }
