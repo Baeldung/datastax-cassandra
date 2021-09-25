@@ -28,9 +28,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Testcontainers
-@ContextConfiguration(initializers = CassandraIntegrationTest.Initializer.class)
+@ContextConfiguration(initializers = CassandraLoggingIntegrationTest.Initializer.class)
 @EnableConfigurationProperties
-class CassandraIntegrationTest {
+class CassandraLoggingIntegrationTest {
 
     private static final String KEYSPACE_NAME = "test";
 
@@ -50,6 +50,11 @@ class CassandraIntegrationTest {
               "spring.data.cassandra.port=" + cassandra.getMappedPort(9042)
             ).applyTo(configurableApplicationContext.getEnvironment());
 
+            System.setProperty("datastax-java-driver.advanced.request-tracker.class", "RequestLogger");
+            System.setProperty("datastax-java-driver.advanced.request-tracker.logs.success.enabled", "true");
+            System.setProperty("datastax-java-driver.advanced.request-tracker.logs.slow.enabled", "true");
+            System.setProperty("datastax-java-driver.advanced.request-tracker.logs.error.enabled", "true");
+
             createKeyspace(cassandra.getCluster());
         }
     }
@@ -62,7 +67,7 @@ class CassandraIntegrationTest {
     }
 
     @Nested
-    class SpringCassandraApplicationTest {
+    class SpringCassandraIntegrationTest {
 
         @Test
         void givenCassandraContainer_whenSpringContextIsBootstrapped_thenContainerIsRunningWithNoExceptions() {
@@ -75,46 +80,26 @@ class CassandraIntegrationTest {
     class PersonRepositoryIntegrationTest {
 
         @Test
-        void givenValidPersonRecord_whenSavingIt_thenDataIsPersisted() {
+        void givenExistingPersonRecord_whenUpdatingIt_thenRecordIsUpdated() {
             UUID personId = UUIDs.timeBased();
-            Person newPerson = new Person(personId, "Luka", "Modric");
-            personRepository.save(newPerson);
+            Person existingPerson = new Person(personId, "Luka", "Modric");
+            personRepository.save(existingPerson);
+            existingPerson.setFirstName("Marko");
+            personRepository.save(existingPerson);
 
             List<Person> savedPersons = personRepository.findAllById(List.of(personId));
-            assertThat(savedPersons.get(0)).isEqualTo(newPerson);
+            assertThat(savedPersons.get(0).getFirstName()).isEqualTo("Marko");
         }
 
         @Test
-        void givenValidPersonUsingLocalDate_whenSavingIt_thenDataIsPersisted() {
+        void givenExistingPersonRecord_whenDeletingIt_thenRecordIsDeleted() {
             UUID personId = UUIDs.timeBased();
-            Person newPerson = new Person(personId, "Luka", "Modric");
-            newPerson.setBirthDate(LocalDate.of(1985, 9, 9));
-            personRepository.save(newPerson);
+            Person existingPerson = new Person(personId, "Luka", "Modric");
+
+            personRepository.delete(existingPerson);
 
             List<Person> savedPersons = personRepository.findAllById(List.of(personId));
-            assertThat(savedPersons.get(0)).isEqualTo(newPerson);
-        }
-
-        @Test
-        void givenValidPersonUsingLocalDateTime_whenSavingIt_thenDataIsPersisted() {
-            UUID personId = UUIDs.timeBased();
-            Person newPerson = new Person(personId, "Luka", "Modric");
-            newPerson.setLastVisitedDate(LocalDateTime.of(2021, 7, 13, 11, 30));
-            personRepository.save(newPerson);
-
-            List<Person> savedPersons = personRepository.findAllById(List.of(personId));
-            assertThat(savedPersons.get(0)).isEqualTo(newPerson);
-        }
-
-        @Test
-        void givenValidPersonUsingLegacyDate_whenSavingIt_thenDataIsPersisted() {
-            UUID personId = UUIDs.timeBased();
-            Person newPerson = new Person(personId, "Luka", "Modric");
-            newPerson.setLastPurchasedDate(new Date(LocalDate.of(2021, 7, 13).toEpochDay()));
-            personRepository.save(newPerson);
-
-            List<Person> savedPersons = personRepository.findAllById(List.of(personId));
-            assertThat(savedPersons.get(0)).isEqualTo(newPerson);
+            assertThat(savedPersons.isEmpty()).isTrue();
         }
 
     }
