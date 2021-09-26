@@ -50,13 +50,23 @@ class CassandraLoggingIntegrationTest {
               "spring.data.cassandra.port=" + cassandra.getMappedPort(9042)
             ).applyTo(configurableApplicationContext.getEnvironment());
 
-            System.setProperty("datastax-java-driver.advanced.request-tracker.class", "RequestLogger");
-            System.setProperty("datastax-java-driver.advanced.request-tracker.logs.success.enabled", "true");
-            System.setProperty("datastax-java-driver.advanced.request-tracker.logs.slow.enabled", "true");
-            System.setProperty("datastax-java-driver.advanced.request-tracker.logs.error.enabled", "true");
-
+            enableRequestTracker();
             createKeyspace(cassandra.getCluster());
         }
+    }
+
+    private static void enableRequestTracker() {
+        System.setProperty("datastax-java-driver.advanced.request-tracker.class", "RequestLogger");
+        System.setProperty("datastax-java-driver.advanced.request-tracker.logs.success.enabled", "true");
+        System.setProperty("datastax-java-driver.advanced.request-tracker.logs.slow.enabled", "true");
+        System.setProperty("datastax-java-driver.advanced.request-tracker.logs.error.enabled", "true");
+
+        System.setProperty("datastax-java-driver.advanced.request-tracker.logs.show-values", "false");
+        System.setProperty("datastax-java-driver.advanced.request-tracker.logs.max-value-length", "100");
+        System.setProperty("datastax-java-driver.advanced.request-tracker.logs.max-values", "100");
+
+        System.setProperty("datastax-java-driver.advanced.request-tracker.logs.slow.threshold ", "1 second");
+        System.setProperty("datastax-java-driver.advanced.request-tracker.logs.show-stack-trace", "true");
     }
 
     private static void createKeyspace(Cluster cluster) {
