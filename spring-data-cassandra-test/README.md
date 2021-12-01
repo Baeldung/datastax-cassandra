@@ -14,3 +14,6 @@ mvn clean install
 mvn test
 ```
 
+### Relevant Articles:
+
+- [Testing NoSQL Queries With Spring Boot and @DataCassandraTest](https://www.baeldung.com/spring-boot-datacassandratest)
