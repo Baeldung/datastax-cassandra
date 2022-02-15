@@ -21,6 +21,7 @@
 	    <module>avengers-dashboard</module>
 	    <module>cassandra-unit</module>
 	    <module>spring-data-cassandra-test</module>
+	    <module>spring-boot-astra-db</module>
 	</modules>
 
 	<build>
