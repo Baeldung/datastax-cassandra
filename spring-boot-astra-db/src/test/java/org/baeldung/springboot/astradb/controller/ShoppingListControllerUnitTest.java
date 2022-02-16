@@ -9,7 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-class ShoppingListControllerTest {
+class ShoppingListControllerUnitTest {
 
     @Mock
     private ShoppingListService service;

@@ -15,7 +15,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
 
-class ShoppingListServiceTest {
+class ShoppingListServiceUnitTest {
 
     @Mock
     private ShoppingListRepository repository;
